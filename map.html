@@ -1,0 +1,318 @@
+<!--
+	此示例下载自 https://echarts.apache.org/examples/zh/editor.html?c=map-HK&lang=ts
+-->
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body style="height: 100%; margin: 0">
+    <div id="container" style="height: 100%"></div>
+    <img class="pic" src="https://s2.loli.net/2024/04/26/H3XuQNUkhYmZ8a2.png" alt="">
+    <img class="pic" src="https://s2.loli.net/2024/04/26/H3XuQNUkhYmZ8a2.png" alt="">
+    <img class="pic" src="https://s2.loli.net/2024/04/23/mGdJZWTFl2qUBoy.jpg" alt="">
+    <img class="pic" src="https://s2.loli.net/2024/04/23/wbaIc2WvPAMEVof.jpg" alt="">
+
+    <div id="popup">
+        <div class="header">
+            <div class="close">
+                <span>地区</span>
+                ×
+            </div>
+            <img src="https://s2.loli.net/2024/04/23/3P6gv4S1mLMh7wo.png">
+            <div class="info">剩余猪仔<span>73只</span></div>
+        </div>
+        <div class="bottom">
+            <div class="button">
+                查看详情
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://cdn.staticfile.net/jquery/3.7.1/jquery.min.js"></script>
+    <script type="text/javascript"
+        src="https://registry.npmmirror.com/echarts/5.5.0/files/dist/echarts.min.js"></script>
+
+    <script type="text/javascript">
+        function hexToRgb(hex, opacity = 1) {
+            // 去除#号
+            var color = hex.replace("#", "");
+
+            // 分割成红、绿、蓝三部分的16进制字符串
+            var red = parseInt(color.substring(0, 2), 16) + 30;
+            var green = parseInt(color.substring(2, 4), 16) + 30;
+            var blue = parseInt(color.substring(4, 6), 16) + 30;
+
+            return `RGB(${red}, ${green}, ${blue},${opacity})`;
+        }
+
+        let currentName = "";
+
+        var dom = document.getElementById('container');
+        // var picDom = document.getElementById('pic');
+        const picDoms = document.querySelectorAll('.pic')
+        var myChart = echarts.init(dom, null, {
+            renderer: 'canvas',
+            useDirtyRect: false
+        });
+        var app = {};
+        var ROOT_PATH = 'https://echarts.apache.org/examples';
+        var option;
+
+        myChart.showLoading();
+
+        myChart.on("click", (e) => {
+            console.log(e)
+            document.getElementById('popup').style.display = 'block'
+            console.log(document.querySelector('.close>span'))
+            document.querySelector('.close>span').innerText = e.name
+            currentName = e.name;
+            document.querySelector('.info>span').innerText = Math.floor(Math.random() * 100) + '只'
+        })
+
+        const closeButton = document.querySelector('.close')
+        closeButton.addEventListener('click', () => {
+            document.getElementById('popup').style.display = 'none'
+            console.log(currentName)
+
+            myChart.dispatchAction({
+                type: 'select',
+                // name: currentName,
+                dataIndex: 1
+            })
+        })
+
+        $.get("500117.geojson", function (geoJson) {
+            myChart.hideLoading();
+
+            echarts.registerMap('cq', geoJson);
+
+            const colors = ['#4CD964',
+                '#5AC8FA',
+                '#007AFF',
+                '#5856D6',
+                '#FF2D70',
+                '#FF3B30',
+                '#FF9500',
+                '#FFCC00',
+                '#8E8E93',
+            ];
+
+            const regions = geoJson.features.map((item) => {
+                const index = Math.floor(Math.random() * 4);
+                const imgdom = new Image(100, 100);
+                imgdom.src = "https://s2.loli.net/2024/04/26/Ki6krzEPDpjL9C4.png";
+                console.log(item.properties.name)
+                let dom = ''
+                if (item.properties.name == "合阳城街道") {
+                    dom = picDoms[1]
+                    console.log(dom)
+
+                }
+                dom = picDoms[1]
+                return {
+                    name: item.properties.name,
+                    zoom: 3,
+
+                    itemStyle: {
+                        // areaColor: { image: dom, repeat: 'no-repeat' },
+                        areaColor: colors[index],
+                        borderColor: "rgb(255,255,255)",
+                        borderWidth: 1,
+                        opacity: 1,
+                    },
+                    emphasis: {
+                        // focus: "self",
+                        disabled: true,
+                        itemStyle: {
+                            areaColor: { image: picDoms[index], repeat: "no-repeat" },
+                            // areaColor: colors[index],
+                            borderColor: "rgb(255,255,255)",
+                            borderWidth: 2,
+                            opacity: 1,
+                        },
+                    },
+                    select: {
+                        itemStyle: {
+                            opacity: 1,
+                            // focus: "self",
+                            // areaColor: hexToRgb(colors[index]),
+                            borderColor: "rgb(255,255,255)",
+                            borderWidth: 2,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)',
+                            shadowBlur: 10
+
+                        },
+                    },
+                }
+            })
+
+
+            myChart.setOption(
+                (option = {
+
+                    geo: {
+                        map: "cq",
+                        roam: true,
+                        animation: true,
+                        zoom: 1.5,
+                        scaleLimit: {
+                            min: 1,
+                            max: 2,
+                        },
+                        selectedMode: "single",
+                        regions: regions,
+                        itemStyle: {
+                            areaColor: { image: picDoms[0] },
+                            // 默认地图区域样式
+                            borderColor: "transparent",
+                            borderWidth: 1,
+                            opacity: 1,
+                        },
+
+                        emphasis: {
+                            focus: "self",
+                            itemStyle: {
+                                areaColor: { image: picDoms[0] },
+                                borderColor: "rgb(255,255,255)",
+                                borderWidth: 1,
+                                opacity: 1,
+                            },
+                        },
+
+                        select: {
+                            itemStyle: {
+                                opacity: 1,
+                                // areaColor: "red",
+                                areaColor: { image: picDoms[0] },
+                                scale: 1.2,
+                                borderColor: "rgb(255,255,255)",
+                                borderWidth: 2,
+
+                            },
+                        },
+                    },
+
+                    visualMap: {
+
+                        show: false
+
+                    },
+
+
+
+                })
+            );
+        });
+
+        if (option && typeof option === 'object') {
+            myChart.setOption(option);
+        }
+
+        window.addEventListener('resize', myChart.resize);
+    </script>
+
+    <style>
+        #container {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background-color: #6ad57e;
+            background-size: cover;
+            background-position: center;
+            /* background-image: url("https://s2.loli.net/2024/04/26/iqSFXHefvV7D62s.png"); */
+        }
+
+        #popup {
+            width: 40%;
+            aspect-ratio: 0.7/1;
+            background-color: white;
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 30px;
+            padding: 20px;
+            transition: all 1s;
+            display: none;
+        }
+
+        .header {
+            width: 100%;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            align-items: space-around;
+            justify-content: flex-start;
+        }
+
+        .header>.close {
+            width: 100%;
+            height: 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 50px;
+            cursor: pointer;
+        }
+
+        .header>.close>span {
+            font-size: 38px;
+            width: 90%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            /* 文本不换行 */
+            white-space: nowrap;
+        }
+
+        .header>img {
+            width: 100%;
+            height: 80%;
+            object-fit: cover;
+            border-radius: 30px;
+        }
+
+        .header>.info {
+            width: 100%;
+            height: 12%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+        }
+
+        .header>.info>span {
+            font-size: 40px;
+            font-weight: 600;
+            color: rgb(255, 69, 69);
+        }
+
+        .bottom {
+            width: 100%;
+            height: 20%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .button {
+            width: 100%;
+            height: 60px;
+            border-radius: 30px;
+            background-color: rgb(23, 25, 26);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .pic {
+            display: none;
+        }
+    </style>
+</body>
+
+</html>
