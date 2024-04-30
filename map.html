@@ -84,7 +84,7 @@
             })
         })
 
-        $.get("500117.geojson", function (geoJson) {
+        $.get("https://sawsclong.github.io/gg/500117.geojson", function (geoJson) {
             myChart.hideLoading();
 
             echarts.registerMap('cq', geoJson);
