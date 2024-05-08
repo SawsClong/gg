@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <iframe src="/hc-layertop.svg"></iframe>
+    <div id="popup">
+        <div class="header">
+            <div class="close">
+                <span>地区</span>
+                ×
+            </div>
+            <img src="https://s2.loli.net/2024/04/23/3P6gv4S1mLMh7wo.png">
+            <div class="info">剩余猪仔<span>73只</span></div>
+        </div>
+        <div class="bottom">
+            <div class="button">
+                查看详情
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+    const ig = document.querySelector('iframe')
+    console.log(ig)
+    let activedDom = null;
+    ig.onload = () => {
+        const pathDoms = ig.contentDocument.querySelectorAll('path')
+        for (let j = 0; j < pathDoms.length; j++) {
+            pathDoms[j].style.fill = 'rgba(0,0,0,0.4)';
+            pathDoms[j].style.transition = 'all 0.3s ease'
+        }
+        const svg = ig.contentDocument.querySelector("svg");
+        svg.addEventListener('click', (e) => {
+            let activeName = e.target.getAttribute('name');
+            activedDom = e.target;
+            // e.target.classList.add("active");
+            e.target.style.stroke = "white"
+            e.target.style.strokeWidth = 5;
+            e.target.style.fillOpacity = 0;
+            e.target.style.zIndex = 100000;
+            console.log(e)
+            document.getElementById('popup').style.display = 'block'
+            console.log(document.querySelector('.close>span'))
+            document.querySelector('.close>span').innerText = activeName;
+            document.querySelector('.info>span').innerText = Math.floor(Math.random() * 100) + '只'
+            for (let i = 0; i < pathDoms.length; i++) {
+                if (pathDoms[i].getAttribute('name') != activeName) {
+                    pathDoms[i].style.strokeWidth = 0;
+                    // pathDoms[i].style.fillOpacity = 1;
+                }
+            }
+        })
+
+        const closeButton = document.querySelector('.close')
+        closeButton.addEventListener('click', () => {
+            document.getElementById('popup').style.display = 'none'
+            activedDom.style.strokeWidth = 0;
+        })
+    }
+</script>
+<style>
+    body {
+        position: relative;
+    }
+
+    iframe {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    svg {
+        transform: scale(0.5);
+    }
+
+    g image {
+        cursor: pointer;
+    }
+
+    #popup {
+        width: 40%;
+        aspect-ratio: 0.7/1;
+        background-color: white;
+        position: fixed;
+        right: 30px;
+        top: 50%;
+        transform: translateY(-50%);
+        border-radius: 30px;
+        padding: 20px;
+        transition: all 1s;
+        display: none;
+    }
+
+    .header {
+        width: 100%;
+        height: 80%;
+        display: flex;
+        flex-direction: column;
+        align-items: space-around;
+        justify-content: flex-start;
+    }
+
+    .header>.close {
+        width: 100%;
+        height: 8%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 50px;
+        cursor: pointer;
+    }
+
+    .header>.close>span {
+        font-size: 38px;
+        width: 90%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        /* 文本不换行 */
+        white-space: nowrap;
+    }
+
+    .header>img {
+        width: 100%;
+        height: 80%;
+        object-fit: cover;
+        border-radius: 30px;
+    }
+
+    .header>.info {
+        width: 100%;
+        height: 12%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 30px;
+    }
+
+    .header>.info>span {
+        font-size: 40px;
+        font-weight: 600;
+        color: rgb(255, 69, 69);
+    }
+
+    .bottom {
+        width: 100%;
+        height: 20%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .button {
+        width: 100%;
+        height: 60px;
+        border-radius: 30px;
+        background-color: rgb(23, 25, 26);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .pic {
+        display: none;
+    }
+</style>
+
+</html>
