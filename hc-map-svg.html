@@ -24,78 +24,11 @@
             </div>
         </div>
     </div>
-    <script>
-        const body = document.querySelector('body');
-        const ig = document.querySelector('iframe')
-        console.log(ig)
-        let activedDom = null;
-        ig.onload = () => {
-            const pathDoms = ig.contentDocument.querySelectorAll('path')
-            for (let j = 0; j < pathDoms.length; j++) {
-                pathDoms[j].style.fill = 'rgba(0,0,0,0.4)';
-                pathDoms[j].style.transition = 'all 0.3s ease'
-            }
-            const svg = ig.contentDocument.querySelector("svg");
-            svg.addEventListener('click', (e) => {
-                let activeName = e.target.getAttribute('name');
-                activedDom = e.target;
-                // e.target.classList.add("active");
-                e.target.style.stroke = "white"
-                e.target.style.strokeWidth = 5;
-                e.target.style.fillOpacity = 0;
-                e.target.style.zIndex = 100000;
-                console.log(e)
-                document.getElementById('popup').style.display = 'block'
-                console.log(document.querySelector('.close>span'))
-                document.querySelector('.close>span').innerText = activeName;
-                document.querySelector('.info>span').innerText = Math.floor(Math.random() * 100) + '只'
-                for (let i = 0; i < pathDoms.length; i++) {
-                    if (pathDoms[i].getAttribute('name') != activeName) {
-                        pathDoms[i].style.strokeWidth = 0;
-                        // pathDoms[i].style.fillOpacity = 1;
-                    }
-                }
-            })
+    <!-- 微信的SDK -->
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+    <!-- uni 的 SDK -->
+    <script type="text/javascript" src="https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.1.5.2.js"></script>
 
-            const closeButton = document.querySelector('.close')
-            closeButton.addEventListener('click', () => {
-                document.getElementById('popup').style.display = 'none'
-                activedDom.style.strokeWidth = 0;
-            })
-        }
-    </script>
-    <script type="text/javascript">
-        var userAgent = navigator.userAgent;
-        if (userAgent.indexOf('AlipayClient') > -1) {
-            // 支付宝小程序的 JS-SDK 防止 404 需要动态加载，如果不需要兼容支付宝小程序，则无需引用此 JS 文件。
-            document.writeln('<script src="https://appx/web-view.min.js"' + '>' + '<' + '/' + 'script>');
-        } else if (/QQ/i.test(userAgent) && /miniProgram/i.test(userAgent)) {
-            // QQ 小程序
-            document.write(
-                '<script type="text/javascript" src="https://qqq.gtimg.cn/miniprogram/webview_jssdk/qqjssdk-1.0.0.js"><\/script>'
-            );
-        } else if (/miniProgram/i.test(userAgent) && /micromessenger/i.test(userAgent)) {
-            // 微信小程序 JS-SDK 如果不需要兼容微信小程序，则无需引用此 JS 文件。
-            document.write('<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"><\/script>');
-        } else if (/toutiaomicroapp/i.test(userAgent)) {
-            // 头条小程序 JS-SDK 如果不需要兼容头条小程序，则无需引用此 JS 文件。
-            document.write(
-                '<script type="text/javascript" src="https://s3.pstatp.com/toutiao/tmajssdk/jssdk-1.0.1.js"><\/script>');
-        } else if (/swan/i.test(userAgent)) {
-            // 百度小程序 JS-SDK 如果不需要兼容百度小程序，则无需引用此 JS 文件。
-            document.write(
-                '<script type="text/javascript" src="https://b.bdstatic.com/searchbox/icms/searchbox/js/swan-2.0.18.js"><\/script>'
-            );
-        } else if (/quickapp/i.test(userAgent)) {
-            // quickapp
-            document.write('<script type="text/javascript" src="https://quickapp/jssdk.webview.min.js"><\/script>');
-        }
-        if (!/toutiaomicroapp/i.test(userAgent)) {
-            document.querySelector('.post-message-section').style.visibility = 'visible';
-        }
-    </script>
-    <script type="text/javascript"
-        src="https://gitcode.net/dcloud/hello-uni-app-x/-/blob/alpha/hybrid/html/uni.webview.1.5.5.js"></script>
     <script type="text/javascript">
         // 待触发 `UniAppJSBridgeReady` 事件后，即可调用 uni 的 API。
         document.addEventListener('UniAppJSBridgeReady', function () {
@@ -107,6 +40,8 @@
             uni.getEnv(function (res) {
                 console.log('当前环境：' + JSON.stringify(res));
             });
+
+            console.log(document.querySelector('.button'))
 
             document.querySelector('.button').addEventListener('click', function () {
                 console.log(document.querySelector('.close>span').innerText)
@@ -152,6 +87,47 @@
             // });
         });
     </script>
+    <script>
+        const body = document.querySelector('body');
+        const ig = document.querySelector('iframe')
+        console.log(ig)
+        let activedDom = null;
+        ig.onload = () => {
+            const pathDoms = ig.contentDocument.querySelectorAll('path')
+            for (let j = 0; j < pathDoms.length; j++) {
+                pathDoms[j].style.fill = 'rgba(0,0,0,0.4)';
+                pathDoms[j].style.transition = 'all 0.3s ease'
+            }
+            const svg = ig.contentDocument.querySelector("svg");
+            svg.addEventListener('click', (e) => {
+                let activeName = e.target.getAttribute('name');
+                activedDom = e.target;
+                // e.target.classList.add("active");
+                e.target.style.stroke = "white"
+                e.target.style.strokeWidth = 5;
+                e.target.style.fillOpacity = 0;
+                e.target.style.zIndex = 100000;
+                console.log(e)
+                document.getElementById('popup').style.display = 'block'
+                console.log(document.querySelector('.close>span'))
+                document.querySelector('.close>span').innerText = activeName;
+                document.querySelector('.info>span').innerText = Math.floor(Math.random() * 100) + '只'
+                for (let i = 0; i < pathDoms.length; i++) {
+                    if (pathDoms[i].getAttribute('name') != activeName) {
+                        pathDoms[i].style.strokeWidth = 0;
+                        // pathDoms[i].style.fillOpacity = 1;
+                    }
+                }
+            })
+
+            const closeButton = document.querySelector('.close')
+            closeButton.addEventListener('click', () => {
+                document.getElementById('popup').style.display = 'none'
+                activedDom.style.strokeWidth = 0;
+            })
+        }
+    </script>
+
 </body>
 
 <style>
