@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>代养</title>
 </head>
 
 <body>
-    <iframe src="https://sawsclong.github.io/gg/hc-layertop.svg"></iframe>
+    <iframe src="https://sawsclong.github.io/gg/合川区h1000.svg"></iframe>
     <div id="popup">
         <div class="header">
             <div class="close">
@@ -27,6 +27,7 @@
 
 </body>
 <script>
+    const body = document.querySelector('body');
     const ig = document.querySelector('iframe')
     console.log(ig)
     let activedDom = null;
@@ -68,14 +69,14 @@
 <style>
     body {
         position: relative;
-        margin:0;
-        padding:0;
+        margin: 0;
+        padding: 0;
     }
 
     iframe {
         width: 100vw;
         height: 100vh;
-        border:0;
+        border: 0;
         overflow: scroll;
     }
 
@@ -95,7 +96,7 @@
         right: 30px;
         top: 50%;
         transform: translateY(-50%);
-        border-radius: 30px;
+        border-radius: 15px;
         padding: 20px;
         transition: all 1s;
         display: none;
@@ -116,12 +117,14 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 50px;
+        font-size: 30px;
         cursor: pointer;
+        margin-top: -10px;
     }
 
     .header>.close>span {
-        font-size: 38px;
+        font-size: 20px;
+        margin-top: -5px;
         width: 90%;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -142,11 +145,11 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 30px;
+        font-size: 20px;
     }
 
     .header>.info>span {
-        font-size: 40px;
+        font-size: 25px;
         font-weight: 600;
         color: rgb(255, 69, 69);
     }
@@ -161,8 +164,8 @@
 
     .button {
         width: 100%;
-        height: 60px;
-        border-radius: 30px;
+        height: 40px;
+        border-radius: 20px;
         background-color: rgb(23, 25, 26);
         color: white;
         display: flex;
