@@ -24,106 +24,106 @@
             </div>
         </div>
     </div>
-
-</body>
-<script>
-    const body = document.querySelector('body');
-    const ig = document.querySelector('iframe')
-    console.log(ig)
-    let activedDom = null;
-    ig.onload = () => {
-        const pathDoms = ig.contentDocument.querySelectorAll('path')
-        for (let j = 0; j < pathDoms.length; j++) {
-            pathDoms[j].style.fill = 'rgba(0,0,0,0.4)';
-            pathDoms[j].style.transition = 'all 0.3s ease'
-        }
-        const svg = ig.contentDocument.querySelector("svg");
-        svg.addEventListener('click', (e) => {
-            let activeName = e.target.getAttribute('name');
-            activedDom = e.target;
-            // e.target.classList.add("active");
-            e.target.style.stroke = "white"
-            e.target.style.strokeWidth = 5;
-            e.target.style.fillOpacity = 0;
-            e.target.style.zIndex = 100000;
-            console.log(e)
-            document.getElementById('popup').style.display = 'block'
-            console.log(document.querySelector('.close>span'))
-            document.querySelector('.close>span').innerText = activeName;
-            document.querySelector('.info>span').innerText = Math.floor(Math.random() * 100) + '只'
-            for (let i = 0; i < pathDoms.length; i++) {
-                if (pathDoms[i].getAttribute('name') != activeName) {
-                    pathDoms[i].style.strokeWidth = 0;
-                    // pathDoms[i].style.fillOpacity = 1;
+    <script>
+        const body = document.querySelector('body');
+        const ig = document.querySelector('iframe')
+        console.log(ig)
+        let activedDom = null;
+        ig.onload = () => {
+            const pathDoms = ig.contentDocument.querySelectorAll('path')
+            for (let j = 0; j < pathDoms.length; j++) {
+                pathDoms[j].style.fill = 'rgba(0,0,0,0.4)';
+                pathDoms[j].style.transition = 'all 0.3s ease'
+            }
+            const svg = ig.contentDocument.querySelector("svg");
+            svg.addEventListener('click', (e) => {
+                let activeName = e.target.getAttribute('name');
+                activedDom = e.target;
+                // e.target.classList.add("active");
+                e.target.style.stroke = "white"
+                e.target.style.strokeWidth = 5;
+                e.target.style.fillOpacity = 0;
+                e.target.style.zIndex = 100000;
+                console.log(e)
+                document.getElementById('popup').style.display = 'block'
+                console.log(document.querySelector('.close>span'))
+                document.querySelector('.close>span').innerText = activeName;
+                document.querySelector('.info>span').innerText = Math.floor(Math.random() * 100) + '只'
+                for (let i = 0; i < pathDoms.length; i++) {
+                    if (pathDoms[i].getAttribute('name') != activeName) {
+                        pathDoms[i].style.strokeWidth = 0;
+                        // pathDoms[i].style.fillOpacity = 1;
+                    }
                 }
-            }
-        })
+            })
 
-        const closeButton = document.querySelector('.close')
-        closeButton.addEventListener('click', () => {
-            document.getElementById('popup').style.display = 'none'
-            activedDom.style.strokeWidth = 0;
-        })
-    }
-</script>
-
-<script type="text/javascript"
-    src="https://gitcode.net/dcloud/hello-uni-app-x/-/blob/alpha/hybrid/html/uni.webview.1.5.5.js"></script>
-<script type="text/javascript">
-    // 待触发 `UniAppJSBridgeReady` 事件后，即可调用 uni 的 API。
-    document.addEventListener('UniAppJSBridgeReady', function () {
-        uni.postMessage({
-            data: {
-                action: 'message'
-            }
-        });
-        uni.getEnv(function (res) {
-            console.log('当前环境：' + JSON.stringify(res));
-        });
-
-        document.querySelector('.button').addEventListener('click', function () {
-            uni.navigateTo({
-                url: `/pages/unadopted-piglets/UnadoptedPiglets?district=${document.querySelector('.close>span').innerText}`
+            const closeButton = document.querySelector('.close')
+            closeButton.addEventListener('click', () => {
+                document.getElementById('popup').style.display = 'none'
+                activedDom.style.strokeWidth = 0;
+            })
+        }
+    </script>
+    <script type="text/javascript"
+        src="https://gitcode.net/dcloud/hello-uni-app-x/-/blob/alpha/hybrid/html/uni.webview.1.5.5.js"></script>
+    <script type="text/javascript">
+        // 待触发 `UniAppJSBridgeReady` 事件后，即可调用 uni 的 API。
+        document.addEventListener('UniAppJSBridgeReady', function () {
+            // uni.postMessage({
+            //     data: {
+            //         action: 'message'
+            //     }
+            // });
+            uni.getEnv(function (res) {
+                console.log('当前环境：' + JSON.stringify(res));
             });
-        });
 
-        // document.querySelector('.btn-list').addEventListener('click', function (evt) {
-        //     var target = evt.target;
-        //     if (target.tagName === 'BUTTON') {
-        //         var action = target.getAttribute('data-action');
-        //         switch (action) {
-        //             case 'switchTab':
-        //                 uni.switchTab({
-        //                     url: '/pages/tabBar/API/API'
-        //                 });
-        //                 break;
-        //             case 'reLaunch':
-        //                 uni.reLaunch({
-        //                     url: '/pages/tabBar/component/component'
-        //                 });
-        //                 break;
-        //             case 'navigateBack':
-        //                 uni.navigateBack({
-        //                     delta: 1
-        //                 });
-        //                 break;
-        //             default:
-        //                 uni[action]({
-        //                     url: '/pages/component/button/button'
-        //                 });
-        //                 break;
-        //         }
-        //     }
-        // });
-        // document.getElementById('postMessage').addEventListener('click', function () {
-        //     uni.postMessage({
-        //         data: {
-        //             action: 'message'
-        //         }
-        //     });
-        // });
-    });
-</script>
+            document.querySelector('.button').addEventListener('click', function () {
+                console.log(document.querySelector('.close>span').innerText)
+                uni.navigateTo({
+                    url: `/pages/unadopted-piglets/UnadoptedPiglets?district=${document.querySelector('.close>span').innerText}`
+                });
+            });
+
+            // document.querySelector('.btn-list').addEventListener('click', function (evt) {
+            //     var target = evt.target;
+            //     if (target.tagName === 'BUTTON') {
+            //         var action = target.getAttribute('data-action');
+            //         switch (action) {
+            //             case 'switchTab':
+            //                 uni.switchTab({
+            //                     url: '/pages/tabBar/API/API'
+            //                 });
+            //                 break;
+            //             case 'reLaunch':
+            //                 uni.reLaunch({
+            //                     url: '/pages/tabBar/component/component'
+            //                 });
+            //                 break;
+            //             case 'navigateBack':
+            //                 uni.navigateBack({
+            //                     delta: 1
+            //                 });
+            //                 break;
+            //             default:
+            //                 uni[action]({
+            //                     url: '/pages/component/button/button'
+            //                 });
+            //                 break;
+            //         }
+            //     }
+            // });
+            // document.getElementById('postMessage').addEventListener('click', function () {
+            //     uni.postMessage({
+            //         data: {
+            //             action: 'message'
+            //         }
+            //     });
+            // });
+        });
+    </script>
+</body>
+
 <style>
     body {
         position: relative;
