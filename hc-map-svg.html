@@ -8,7 +8,6 @@
 </head>
 
 <body>
-    <iframe src="https://sawsclong.github.io/gg/合川区h1000.svg"></iframe>
     <div id="popup">
         <div class="header">
             <div class="close">
@@ -45,19 +44,19 @@
                 });
             });
         });
-    </script>
-    <script>
-        const body = document.querySelector('body');
+        console.log("unijsbridge loading success")
         const ig = document.querySelector('iframe')
         console.log(ig)
-        let activedDom = null;
-        ig.onload = () => {
-            const pathDoms = ig.contentDocument.querySelectorAll('path')
+        const initPathEvent = () => {
+            let activedDom = null;
+            console.log("Local iframe is now loaded."); // "Local iframe is now loaded."
+            const pathDoms = iframe.contentDocument.querySelectorAll('path')
+            console.log("igonload")
             for (let j = 0; j < pathDoms.length; j++) {
                 pathDoms[j].style.fill = 'rgba(0,0,0,0.4)';
                 pathDoms[j].style.transition = 'all 0.3s ease'
             }
-            const svg = ig.contentDocument.querySelector("svg");
+            const svg = iframe.contentDocument.querySelector("svg");
             svg.addEventListener('click', (e) => {
                 let activeName = e.target.getAttribute('name');
                 activedDom = e.target;
@@ -85,7 +84,20 @@
                 activedDom.style.strokeWidth = 0;
             })
         }
+        var iframe = document.createElement("iframe");
+        iframe.src = "/合川区h1000.svg";
+        document.body.appendChild(iframe);
+        if (iframe.attachEvent) {
+            iframe.attachEvent("onload", function () {
+                initPathEvent();
+            });
+        } else {
+            iframe.onload = function () {
+                initPathEvent();
+            };
+        }
     </script>
+
 
 </body>
 
