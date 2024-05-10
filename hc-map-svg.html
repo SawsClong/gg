@@ -47,8 +47,15 @@
         console.log("unijsbridge loading success")
         const ig = document.querySelector('iframe')
         console.log(ig)
-        const initPathEvent = () => {
+
+        function initPathEvent() {
             let activedDom = null;
+            const disactive = () => {
+                if (!activedDom) return;
+                document.getElementById('popup').style.display = 'none'
+                activedDom.style.strokeWidth = 0;
+                activedDom = null;
+            }
             console.log("Local iframe is now loaded."); // "Local iframe is now loaded."
             const pathDoms = iframe.contentDocument.querySelectorAll('path')
             console.log("igonload")
@@ -57,8 +64,18 @@
                 pathDoms[j].style.transition = 'all 0.3s ease'
             }
             const svg = iframe.contentDocument.querySelector("svg");
+            svg.scrollLeft = (svg.getAttribute('width') - window.innerWidth) / 2;
+            // svg.scrollHeight = (svg.getAttribute('height') - window.innerHeight) / 2 -10;
             svg.addEventListener('click', (e) => {
                 let activeName = e.target.getAttribute('name');
+                if (!activeName) {
+                    disactive();
+                    return;
+                };
+                if (activedDom && activedDom == e.target) {
+                    disactive();
+                    return;
+                }
                 activedDom = e.target;
                 // e.target.classList.add("active");
                 e.target.style.stroke = "white"
@@ -78,14 +95,14 @@
                 }
             })
 
-            const closeButton = document.querySelector('.close')
+            const closeButton = document.querySelector('.close');
             closeButton.addEventListener('click', () => {
-                document.getElementById('popup').style.display = 'none'
-                activedDom.style.strokeWidth = 0;
+                disactive();
             })
         }
         var iframe = document.createElement("iframe");
         iframe.src = "https://sawsclong.github.io/gg/合川区h1000.svg";
+        // iframe.src = "/合川区h1000.svg";
         document.body.appendChild(iframe);
         if (iframe.attachEvent) {
             iframe.attachEvent("onload", function () {
